@@ -10,6 +10,17 @@ m_vec = [3, 3, 3]
 f_vec = np.multiply(m_vec, 9.8)
 print(f'f vector is {f_vec}')
 
+def create_identity_matrix(size, val):
+  ret_mat = np.array([[0 for c in range(size)] for r in range(size)])
+
+  for r in range(size):
+    for c in range(size):
+      if r == c:
+        ret_mat[r][c] = val
+  return ret_mat
+#  print(f'I matrix is \n{i_mat}')
+
+
 def fixed_fixed_function():
 
 #creating A matrix
@@ -27,13 +38,13 @@ def fixed_fixed_function():
   print(f'A matrix is \n{a_mat}')
 
 #creating identity matrix
-  i_mat = np.array([[0 for c in range(spring_count)] for r in range(spring_count)])
+#  i_mat = np.array([[0 for c in range(spring_count)] for r in range(spring_count)])
 
-  for r in range(spring_count):
-    for c in range(spring_count):
-      if r == c:
-        i_mat[r][c] = spring_constant[r]
-
+#  for r in range(spring_count):
+#    for c in range(spring_count):
+#      if r == c:
+#        i_mat[r][c] = spring_constant[r]
+  i_mat = create_identity_matrix(len(spring_constant), spring_constant[0])
   print(f'I matrix is \n{i_mat}')
 
 #A transpose
