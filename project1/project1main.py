@@ -147,9 +147,11 @@ def solve_displacement(mat):
   print(f'\nEigenvalues for A transpose: \n{eigen_sva}')
 
   condition_value_a = find_largest_eigen(eigen_sva)/find_smallest_eigen(eigen_sva)
-  print(f'\nCondition value for A: \n{condition_value_a}')
+  print(f'\nCondition value for A transpose: \n{condition_value_a}')
 
   print(f'\nu matrix is \n{u_mat}')
+  for i in range(len(u_mat)):
+    print(f'Displacement {i+1} = {u_mat[i]}')
   return u_mat
 
 
