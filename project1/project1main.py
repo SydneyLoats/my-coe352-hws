@@ -1,5 +1,6 @@
 import numpy as np
 import sys
+from scipy.linalg import svd
 
 #take in values for number of springs/masses, spring constants (c) and masses (m)
 
@@ -89,45 +90,65 @@ def solve_displacement(mat, f_vec):
   at_mat = a_mat.transpose()
   print(f'A transpose matrix is \n{at_mat}')
 
+#A transpose inverse
+  ati_mat = np.linalg.pinv(at_mat)
+  print(f'Inverse A transpose matrix is \n{ati_mat}')
+
+#finding w
+  w_vec = np.matmul(ati_mat, f_vec)
+  print(f'w vector is \n{w_vec}')
+
 #identity matrix
   c_mat = create_identity_matrix(spring_constant)
   print(f'C matrix is \n{c_mat}')
 
+#C inverse
+  ci_mat = np.linalg.pinv(c_mat)
+  print(f'C inverse matrix is \n{ci_mat}')
+
+#finding e
+  e_mat = np.matmul(w_vec, ci_mat)
+  print(f'e matrix is \n{e_mat}')
+
+#a inverse
+  ai_mat = np.linalg.pinv(a_mat)
+  print(f'a inverse is \n{ai_mat}')
+
+#finding u (displacement)
+  u_mat = np.matmul(ai_mat, e_mat)
+  print(f'u matrix is \n{u_mat}')
+
 #stiffness matrix K
-  temp_mat = np.matmul(at_mat, c_mat)
-  k_mat = np.matmul(temp_mat, a_mat)
-  print(f'K matrix is \n{k_mat}')
+#  temp_mat = np.matmul(at_mat, c_mat)
+#  k_mat = np.matmul(temp_mat, a_mat)
+#  print(f'K matrix is \n{k_mat}')
 
 #inverse stiffness matrix
-  ki_mat = np.linalg.pinv(k_mat)
-  print(f'K inverse is \n{ki_mat}')
+#  ki_mat = np.linalg.pinv(k_mat)
+#  print(f'K inverse is \n{ki_mat}')
 
 #solving for displacement
-  u_mat = np.matmul(ki_mat, f_vec)
-  print(f'Displacement u is \n{u_mat}')
+#  u_mat = np.matmul(ki_mat, f_vec)
+#  print(f'Displacement u is \n{u_mat}')
+
+  return u_mat
 
 
+#def solve_svd(mat):
 
-#
-#A transpose inverse matrix
-#  ati_mat = np.linalg.pinv(at_mat)
-#  print(f'A transpose inverse matrix is \n{ati_mat}')
+#  a_mat = mat
+#  U, s, VT = svd(a_mat)
+#  print(f'Singular values are \n{s}')
+#  return s
 
-#solving for w
-#  w_vec = np.matmul(ati_mat, f_vec)
-#  print(f'w vector is \n{w_vec}')
+#def solve_eigenvalues(s):
 
-#solving for e
-#  ii_mat = np.linalg.pinv(i_mat)
-#  e_vec = np.matmul(ii_mat, w_vec) 
-#  print(f'e (elongation) vector is \n{e_vec}')
+#  eigen = np.array(s) 
+#  for r in range(
+#  print(f'Eigenvalues are \n{eigen}')
 
-#solving for u (displacement)
-#  ai_mat = np.linalg.pinv(a_mat)
-#  print(f'A inverse matrix is \n{ai_mat}')
-#  u_vec = np.matmul(ai_mat, e_vec)
-#  print(f'u (displacement) vector is \n{u_vec}')
-
+#solve_svd(a_mat_fixed_fixed())
+#solve_eigenvalues(s)
 
 solve_displacement(a_mat_fixed_fixed(), f_vec)
 
