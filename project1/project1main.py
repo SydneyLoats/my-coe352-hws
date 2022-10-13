@@ -10,32 +10,37 @@ for i in range(spring_count):
   spring_const_vec[i] = int(input('Spring constant {i}: '))
 print(spring_const_vec)
 
-#type = 0  #where 0=fixed-fixed, 1=fixed-free, 2=free-free
+type = 0  #where 0=fixed-fixed, 1=fixed-free, 2=free-free
 
 mass_count = int(input('Number of masses: '))
+
+
+def check_counts(spring_count, mass_count):
+  if (spring_count - mass_count) == 1:
+    type = 0
+    print('Fixed-fixed')
+    return mass_count
+  elif spring_count == mass_count:
+    type = 1
+    print('Fixed-free')
+    return mass_count
+  elif (mass_count - spring_count) == 1:
+    type = 2
+    print('Free-free')
+    return mass_count
+  else:
+    print('\nInvalid number of masses, please enter a different number: ')
+    mass_count = int(input('Number of masses: '))
+    check_counts(spring_count, mass_count)
+
+mass_count = check_counts(spring_count, mass_count)
+
 print(mass_count)
 m_vec = np.array([1 for i in range(mass_count)])
-#print(m_vec)
+print(m_vec)
 for i in range(mass_count):
   m_vec[i] = int(input('Mass constant {i}: '))
-#print(m_vec)
-#def check_mass_spring_count():
-#if spring_count - mass_count == 1
-#  type = 0
- #   return
-#elif spring_count - mass_count == 0
-#  type = 1
-  #  return
-#elif mass_count - spring_count == 1
-#  type = 2
-  #  return
-#else
-#  print('\nInvalid number of masses, please select a different number')
-#  mass_count = int(input('Number of masses: ')
-  #  return
-   # check_mass_spring_count()
-  
-#check_mass_spring_count()
+
 print(mass_count)
 
 m_vec = [3, 3, 3]
