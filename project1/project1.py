@@ -135,43 +135,26 @@ def solve_displacement(mat):
   w_vec = np.matmul(c_mat, e_vec)
   print(f'\nInternal stress vector, w, is \n{w_vec}')
 
-#creating A transpose inverse matrix
-#  ati_mat = np.linalg.pinv(at_mat)
-#  print(f'Inverse A transpose matrix is \n{ati_mat}')
-
-#C inverse
-#  ci_mat = np.linalg.pinv(c_mat)
-#  print(f'C inverse matrix is \n{ci_mat}')
-
-#a inverse
-#  ai_mat = np.linalg.pinv(a_mat)
-#  print(f'a inverse is \n{ai_mat}')
-
-#finding u (displacement)
-#  u_mat = np.matmul(ai_mat, e_vec)
-
-
-
-
+#print out the displacement
   print(f'\nu vector is \n{u_vec}')
   for i in range(len(u_vec)):
     print(f'Displacement {i+1} = {u_vec[i]}')
   return u_vec
 
-
+#function to solve svd
 def solve_svd(mat):
   a_mat = mat
   U, s, VT = svd(a_mat)
   return s
 
-
+#function to solve for eigenvalues
 def solve_eigenvalues(s):
   eigen = np.array(s) 
   for r in range(len(s)):
-    eigen[r] = s[r]*2
+    eigen[r] = s[r]*s[r]
   return eigen
 
-
+#function to find the largest eigenvalue
 def find_largest_eigen(eigen):
   largest = eigen[0]
   for r in range(len(eigen)):
@@ -179,7 +162,7 @@ def find_largest_eigen(eigen):
       largest = eigen[r]
   return largest
 
-
+#function to find the smallest eigenvalue
 def find_smallest_eigen(eigen):
   smallest = eigen[0]
   for r in range(len(eigen)):
@@ -187,7 +170,7 @@ def find_smallest_eigen(eigen):
       smallest = eigen[r]
   return smallest
 
-
+#solve the system
 if system_type == 0:
   solve_displacement(a_mat_fixed_fixed())
 else:
