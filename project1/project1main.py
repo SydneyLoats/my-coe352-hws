@@ -2,71 +2,58 @@ import numpy as np
 import sys
 from scipy.linalg import svd
 
-spring_count = int(input('Number of springs: '))
-print(spring_count)
+global spring_count
+spring_count = int(input('Input number of springs (positive integer): '))
+if spring_count < 1:
+  print(f'\nError: the input {spring_count} is invalid, please choose a positive integer')
+  exit()
+print(f'Number of springs input is {spring_count}')
+
+global spring_const_vec
 spring_const_vec = np.array([1 for i in range(spring_count)])
-#print(spring_const_vec)
 for i in range(spring_count):
-  spring_const_vec[i] = int(input('Spring constant {i}: '))
-print(spring_const_vec)
+  spring_const_vec[i] = int(input(f'Input spring constant {i+1}: '))
+print(f'Spring constant vector is {spring_const_vec}')
 
-type = 0  #where 0=fixed-fixed, 1=fixed-free, 2=free-free
+global mass_count
+mass_count = int(input('Input number of masses (positive integer): '))
+if mass_count < 1:
+  print(f'\nError: the input {mass_count} is invalid, please choose a positive integer')
+  exit()
+print(f'Number of masses input is {mass_count}')
 
-mass_count = int(input('Number of masses: '))
-
-
-def check_counts(spring_count, mass_count):
-  if (spring_count - mass_count) == 1:
-    type = 0
-    print('Fixed-fixed')
-    return mass_count
-  elif spring_count == mass_count:
-    type = 1
-    print('Fixed-free')
-    return mass_count
-  elif (mass_count - spring_count) == 1:
-    type = 2
-    print('Free-free')
-    return mass_count
-  else:
-    print('\nInvalid number of masses, please enter a different number: ')
-    mass_count = int(input('Number of masses: '))
-    check_counts(spring_count, mass_count)
-
-mass_count = check_counts(spring_count, mass_count)
-
-print(mass_count)
+global m_vec
 m_vec = np.array([1 for i in range(mass_count)])
-print(m_vec)
 for i in range(mass_count):
-  m_vec[i] = int(input('Mass constant {i}: '))
+  m_vec[i] = int(input(f'Input mass value {i+1}: '))
+print(f'Mass values vector is {m_vec}')
 
-print(mass_count)
+global system_type
+system_type = int(input(f'Input boundary condition(either 0 or 1 where 0=fixed-fixed and 1=fixed-free): '))
+print(f'Boundary input condition is {system_type}')
+if (spring_count - mass_count) == 1 and system_type != 0:
+  print('\nError: the number of masses and springs do not match the boundary condition, please choose different numbers')
+  exit()
+elif (spring_count - mass_count) == 0 and system_type !=1:
+  print('\nError: the number of masses and springs do not match the boundary condition, please choose different numbers')
+  exit()
+ 
 
-m_vec = [3, 3, 3]
-
+global f_vec
 f_vec = np.multiply(m_vec, 9.8)
-#print(f'f vector is {f_vec}')
-
-
 
 
 def create_identity_matrix(val_vec):
   ret_mat = np.array([[0 for c in range(len(val_vec))] for r in range(len(val_vec))])
-
   for r in range(len(val_vec)):
     for c in range(len(val_vec)):
       if r == c:
         ret_mat[r][c] = val_vec[c]
   return ret_mat
 
-mat = create_identity_matrix(spring_const_vec)
-#print(mat)
-
 
 def a_mat_fixed_fixed():
   ret_mat = np.array([[0 for c in range(mass_count)] for r in range(spring_count)])
-
   for r in range(spring_count):
     for c in range(mass_count):
       if r == c:
@@ -74,12 +61,10 @@ def a_mat_fixed_fixed():
       elif r == c+1:
         ret_mat[r][c] = -1
   return ret_mat
- 
 
 
 def a_mat_fixed_free():  
   ret_mat = np.array([[0 for c in range(mass_count)] for r in range(spring_count)])
-
   for r in range(spring_count):
     for c in range(mass_count):
       if r == c:
@@ -89,10 +74,8 @@ def a_mat_fixed_free():
   return ret_mat
 
 
-
 def a_mat_free_free():
   ret_mat = np.array([[0 for c in range(mass_count)] for r in range(spring_count)])
-
   for r in range(spring_count):
     for c in range(mass_count):
       if r == c:
@@ -103,8 +86,7 @@ def a_mat_free_free():
 
 
 #solve for displacement
-def solve_displacement(mat, f_vec):
-
+def solve_displacement(mat):
 #creating A matrix
   a_mat = mat
 #  print(f'A matrix is \n{a_mat}')
@@ -122,9 +104,8 @@ def solve_displacement(mat, f_vec):
 #  print(f'w vector is \n{w_vec}')
 
 #identity matrix
-  c_mat = create_identity_matrix(spring_constant)
+  c_mat = create_identity_matrix(spring_const_vec)
 #  print(f'C matrix is \n{c_mat}')
-
 
 #C inverse
   ci_mat = np.linalg.pinv(c_mat)
@@ -140,9 +121,6 @@ def solve_displacement(mat, f_vec):
 
 #finding u (displacement)
   u_mat = np.matmul(ai_mat, e_mat)
-
-
-
 
   sv = solve_svd(a_mat)
   print(f'\nSingular values for A: \n{sv}')
@@ -171,52 +149,32 @@ def solve_displacement(mat, f_vec):
   condition_value_a = find_largest_eigen(eigen_sva)/find_smallest_eigen(eigen_sva)
   print(f'\nCondition value for A: \n{condition_value_a}')
 
-
-
   print(f'\nu matrix is \n{u_mat}')
-
-#stiffness matrix K
-#  temp_mat = np.matmul(at_mat, c_mat)
-#  k_mat = np.matmul(temp_mat, a_mat)
-#  print(f'K matrix is \n{k_mat}')
-
-#inverse stiffness matrix
-#  ki_mat = np.linalg.pinv(k_mat)
-#  print(f'K inverse is \n{ki_mat}')
-
-#solving for displacement
-
   return u_mat
 
 
 def solve_svd(mat):
-
   a_mat = mat
   U, s, VT = svd(a_mat)
-#  print(f'Singular values are \n{s}')
   return s
 
-def solve_eigenvalues(s):
 
+def solve_eigenvalues(s):
   eigen = np.array(s) 
   for r in range(len(s)):
     eigen[r] = s[r]*2
- # print(f'Eigenvalues are \n{eigen}')
-  
   return eigen
 
-def find_largest_eigen(eigen):
 
+def find_largest_eigen(eigen):
   largest = eigen[0]
   for r in range(len(eigen)):
     if eigen[r] > largest:
       largest = eigen[r]
   return largest
-  
 
 
 def find_smallest_eigen(eigen):
-
   smallest = eigen[0]
   for r in range(len(eigen)):
     if eigen[r] < smallest:
@@ -224,7 +182,9 @@ def find_smallest_eigen(eigen):
   return smallest
 
 
-
-#solve_displacement(a_mat_fixed_fixed(), f_vec)
+if system_type == 0:
+  solve_displacement(a_mat_fixed_fixed())
+else:
+  solve_displacement(a_mat_fixed_free())
 
 
