@@ -86,12 +86,6 @@ def solve_displacement(mat, f_vec):
   a_mat = mat
 #  print(f'A matrix is \n{a_mat}')
 
-
-
-
-
-
-
 #A transpose
   at_mat = a_mat.transpose()
 #  print(f'A transpose matrix is \n{at_mat}')
@@ -133,18 +127,26 @@ def solve_displacement(mat, f_vec):
   eigen_sv = solve_eigenvalues(sv)
   print(f'\nEigenvalues for A: \n{eigen_sv}')
 
+  condition_value_a = find_largest_eigen(eigen_sv)/find_smallest_eigen(eigen_sv)
+  print(f'\nCondition value for A: \n{condition_value_a}')
+
   svc = solve_svd(c_mat)
   print(f'\nSingular values for C: \n{svc}')
 
   eigen_svc = solve_eigenvalues(svc)
   print(f'\nEigenvalues for C: \n{eigen_svc}')
   
+  condition_value_c = find_largest_eigen(eigen_svc)/find_smallest_eigen(eigen_svc)
+  print(f'\nCondition value for A: \n{condition_value_c}')
+
   sva = solve_svd(at_mat)
   print(f'\nSingular values for A transpose: \n{sva}')
 
   eigen_sva = solve_eigenvalues(sva)
   print(f'\nEigenvalues for A transpose: \n{eigen_sva}')
 
+  condition_value_a = find_largest_eigen(eigen_sva)/find_smallest_eigen(eigen_sva)
+  print(f'\nCondition value for A: \n{condition_value_a}')
 
 
 
@@ -160,8 +162,6 @@ def solve_displacement(mat, f_vec):
 #  print(f'K inverse is \n{ki_mat}')
 
 #solving for displacement
-#  u_mat = np.matmul(ki_mat, f_vec)
-#  print(f'Displacement u is \n{u_mat}')
 
   return u_mat
 
@@ -181,7 +181,26 @@ def solve_eigenvalues(s):
  # print(f'Eigenvalues are \n{eigen}')
   
   return eigen
-#solve_eigenvalues(s)
+
+def find_largest_eigen(eigen):
+
+  largest = eigen[0]
+  for r in range(len(eigen)):
+    if eigen[r] > largest:
+      largest = eigen[r]
+  return largest
+  
+
+
+def find_smallest_eigen(eigen):
+
+  smallest = eigen[0]
+  for r in range(len(eigen)):
+    if eigen[r] < smallest:
+      smallest = eigen[r]
+  return smallest
+
+
 
 solve_displacement(a_mat_fixed_fixed(), f_vec)
 
