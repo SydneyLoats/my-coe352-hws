@@ -2,24 +2,42 @@ import numpy as np
 import sys
 from scipy.linalg import svd
 
-#take in values for number of springs/masses, spring constants (c) and masses (m)
+spring_count = int(input('Number of springs: '))
+print(spring_count)
+spring_const_vec = np.array([1 for i in range(spring_count)])
+#print(spring_const_vec)
+for i in range(spring_count):
+  spring_const_vec[i] = int(input('Spring constant {i}: '))
+print(spring_const_vec)
 
-#if len(sys.argv) == 1:
-#  print(f'Please enter input values')
-#  print(f'Usage:')
-#  print(f'python3 project1main.py [number of springs] [number of masses]')
-#  print(f'Example:')
-#  print(f'python3 project1main.py 4 3')
-#  exit()
+#type = 0  #where 0=fixed-fixed, 1=fixed-free, 2=free-free
 
-#spring_count = int(sys.argv[1])
-#mass_count = int(sys.argv[2])
-spring_count = 4
-mass_count = 3
-#print(f'Spring count: {spring_count}')
-#print(f'Mass count: {mass_count}')
+mass_count = int(input('Number of masses: '))
+print(mass_count)
+m_vec = np.array([1 for i in range(mass_count)])
+#print(m_vec)
+for i in range(mass_count):
+  m_vec[i] = int(input('Mass constant {i}: '))
+#print(m_vec)
+#def check_mass_spring_count():
+#if spring_count - mass_count == 1
+#  type = 0
+ #   return
+#elif spring_count - mass_count == 0
+#  type = 1
+  #  return
+#elif mass_count - spring_count == 1
+#  type = 2
+  #  return
+#else
+#  print('\nInvalid number of masses, please select a different number')
+#  mass_count = int(input('Number of masses: ')
+  #  return
+   # check_mass_spring_count()
+  
+#check_mass_spring_count()
+print(mass_count)
 
-spring_constant = [2, 2, 2, 2]
 m_vec = [3, 3, 3]
 
 f_vec = np.multiply(m_vec, 9.8)
@@ -37,7 +55,7 @@ def create_identity_matrix(val_vec):
         ret_mat[r][c] = val_vec[c]
   return ret_mat
 
-mat = create_identity_matrix(spring_constant)
+mat = create_identity_matrix(spring_const_vec)
 #print(mat)
 
 
@@ -202,6 +220,6 @@ def find_smallest_eigen(eigen):
 
 
 
-solve_displacement(a_mat_fixed_fixed(), f_vec)
+#solve_displacement(a_mat_fixed_fixed(), f_vec)
 
 
