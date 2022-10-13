@@ -16,14 +16,14 @@ from scipy.linalg import svd
 #mass_count = int(sys.argv[2])
 spring_count = 4
 mass_count = 3
-print(f'Spring count: {spring_count}')
-print(f'Mass count: {mass_count}')
+#print(f'Spring count: {spring_count}')
+#print(f'Mass count: {mass_count}')
 
 spring_constant = [2, 2, 2, 2]
 m_vec = [3, 3, 3]
 
 f_vec = np.multiply(m_vec, 9.8)
-print(f'f vector is {f_vec}')
+#print(f'f vector is {f_vec}')
 
 
 
@@ -38,7 +38,7 @@ def create_identity_matrix(val_vec):
   return ret_mat
 
 mat = create_identity_matrix(spring_constant)
-print(mat)
+#print(mat)
 
 
 def a_mat_fixed_fixed():
@@ -84,39 +84,71 @@ def solve_displacement(mat, f_vec):
 
 #creating A matrix
   a_mat = mat
-  print(f'A matrix is \n{a_mat}')
+#  print(f'A matrix is \n{a_mat}')
+
+
+
+
+
+
 
 #A transpose
   at_mat = a_mat.transpose()
-  print(f'A transpose matrix is \n{at_mat}')
+#  print(f'A transpose matrix is \n{at_mat}')
 
 #A transpose inverse
   ati_mat = np.linalg.pinv(at_mat)
-  print(f'Inverse A transpose matrix is \n{ati_mat}')
+#  print(f'Inverse A transpose matrix is \n{ati_mat}')
 
 #finding w
   w_vec = np.matmul(ati_mat, f_vec)
-  print(f'w vector is \n{w_vec}')
+#  print(f'w vector is \n{w_vec}')
 
 #identity matrix
   c_mat = create_identity_matrix(spring_constant)
-  print(f'C matrix is \n{c_mat}')
+#  print(f'C matrix is \n{c_mat}')
+
 
 #C inverse
   ci_mat = np.linalg.pinv(c_mat)
-  print(f'C inverse matrix is \n{ci_mat}')
+#  print(f'C inverse matrix is \n{ci_mat}')
 
 #finding e
   e_mat = np.matmul(w_vec, ci_mat)
-  print(f'e matrix is \n{e_mat}')
+#  print(f'e matrix is \n{e_mat}')
 
 #a inverse
   ai_mat = np.linalg.pinv(a_mat)
-  print(f'a inverse is \n{ai_mat}')
+#  print(f'a inverse is \n{ai_mat}')
 
 #finding u (displacement)
   u_mat = np.matmul(ai_mat, e_mat)
-  print(f'u matrix is \n{u_mat}')
+
+
+
+
+  sv = solve_svd(a_mat)
+  print(f'\nSingular values for A: \n{sv}')
+
+  eigen_sv = solve_eigenvalues(sv)
+  print(f'\nEigenvalues for A: \n{eigen_sv}')
+
+  svc = solve_svd(c_mat)
+  print(f'\nSingular values for C: \n{svc}')
+
+  eigen_svc = solve_eigenvalues(svc)
+  print(f'\nEigenvalues for C: \n{eigen_svc}')
+  
+  sva = solve_svd(at_mat)
+  print(f'\nSingular values for A transpose: \n{sva}')
+
+  eigen_sva = solve_eigenvalues(sva)
+  print(f'\nEigenvalues for A transpose: \n{eigen_sva}')
+
+
+
+
+  print(f'\nu matrix is \n{u_mat}')
 
 #stiffness matrix K
 #  temp_mat = np.matmul(at_mat, c_mat)
@@ -134,20 +166,21 @@ def solve_displacement(mat, f_vec):
   return u_mat
 
 
-#def solve_svd(mat):
+def solve_svd(mat):
 
-#  a_mat = mat
-#  U, s, VT = svd(a_mat)
+  a_mat = mat
+  U, s, VT = svd(a_mat)
 #  print(f'Singular values are \n{s}')
-#  return s
+  return s
 
-#def solve_eigenvalues(s):
+def solve_eigenvalues(s):
 
-#  eigen = np.array(s) 
-#  for r in range(
-#  print(f'Eigenvalues are \n{eigen}')
-
-#solve_svd(a_mat_fixed_fixed())
+  eigen = np.array(s) 
+  for r in range(len(s)):
+    eigen[r] = s[r]*2
+ # print(f'Eigenvalues are \n{eigen}')
+  
+  return eigen
 #solve_eigenvalues(s)
 
 solve_displacement(a_mat_fixed_fixed(), f_vec)
