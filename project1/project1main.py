@@ -101,7 +101,7 @@ def solve_displacement(mat):
 
 #finding w
   w_vec = np.matmul(ati_mat, f_vec)
-#  print(f'w vector is \n{w_vec}')
+  print(f'\nInternal stress vector, w, is \n{w_vec}')
 
 #identity matrix
   c_mat = create_identity_matrix(spring_const_vec)
@@ -112,15 +112,15 @@ def solve_displacement(mat):
 #  print(f'C inverse matrix is \n{ci_mat}')
 
 #finding e
-  e_mat = np.matmul(w_vec, ci_mat)
-#  print(f'e matrix is \n{e_mat}')
+  e_vec = np.matmul(w_vec, ci_mat)
+  print(f'\nElongation vector, e, is \n{e_vec}')
 
 #a inverse
   ai_mat = np.linalg.pinv(a_mat)
 #  print(f'a inverse is \n{ai_mat}')
 
 #finding u (displacement)
-  u_mat = np.matmul(ai_mat, e_mat)
+  u_mat = np.matmul(ai_mat, e_vec)
 
   sv = solve_svd(a_mat)
   print(f'\nSingular values for A: \n{sv}')
