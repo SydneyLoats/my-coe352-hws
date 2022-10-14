@@ -32,14 +32,16 @@ print(f'Mass values vector is {m_vec}')
 
 #determine whether to use fixed-fixed or fixed-free
 global system_type
-system_type = int(input(f'Input boundary condition(either 0 or 1 where 0=fixed-fixed and 1=fixed-free): '))
+system_type = int(input(f'Input boundary condition(either 0, 1 or 2 where 0=fixed-fixed and 1=fixed-free, 2=free-free): '))
 print(f'Boundary input condition is {system_type}')
-if (spring_count - mass_count) == 1 and system_type != 0:
+if (spring_count - mass_count) != 1 and system_type == 0:
   print('\nError: the number of masses and springs do not match the boundary condition, please choose different numbers')
   exit()
-elif (spring_count - mass_count) == 0 and system_type !=1:
+elif (spring_count - mass_count) != 0 and system_type ==1:
   print('\nError: the number of masses and springs do not match the boundary condition, please choose different numbers')
   exit()
+elif system_type == 2:
+  print(f'\nFree-free Examination: In a free-free system there are no supports so the masses can move without the springs stretching. This means that there can be a displacement without an elongation. The number of masses is equal to the number of springs plus 1. The stiffness matrix, K, is still square and symmetric, but it is only positive definite. This means the K matrix cannot be invertible, therefore this system cannot be solved using the K matrix.')
  
 #create external force vector, f
 global f_vec
