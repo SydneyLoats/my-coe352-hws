@@ -115,11 +115,20 @@ def solve_displacement(mat):
   print(f'\nEigenvalues for C: \n{eigen_svc}')
   
   condition_value_c = find_largest_eigen(eigen_svc)/find_smallest_eigen(eigen_svc)
-  print(f'\nCondition value for A: \n{condition_value_c}')
+  print(f'\nCondition value for C: \n{condition_value_c}')
 
 #creating stiffness matrix, K
   tempk_mat = np.matmul(at_mat, c_mat)
   k_mat = np.matmul(tempk_mat, a_mat)
+
+  svk = solve_svd(k_mat)
+  print(f'\nSingular values for K: \n{svk}')
+
+  eigen_svk = solve_eigenvalues(svk)
+  print(f'\nEigenvalues for K: \n{eigen_svk}')
+
+  condition_value_k = find_largest_eigen(eigen_svk)/find_smallest_eigen(eigen_svk)
+  print(f'\nCondition value for K: \n{condition_value_k}')  
 
 #creating K inverse matrix
   ki_mat = np.linalg.pinv(k_mat)
