@@ -4,7 +4,7 @@ from scipy.linalg import svd
 
 #assign number of springs and spring constants
 global spring_count
-spring_count = int(input('Input number of springs (positive integer): '))
+spring_count = int(input('Input number of springs: '))
 if spring_count < 1:
   print(f'\nError: the input {spring_count} is invalid, please choose a positive integer')
   exit()
@@ -18,7 +18,7 @@ print(f'Spring constant vector is {spring_const_vec}')
 
 #assign number of masses and mass values
 global mass_count
-mass_count = int(input('Input number of masses (positive integer): '))
+mass_count = int(input('Input number of masses: '))
 if mass_count < 1:
   print(f'\nError: the input {mass_count} is invalid, please choose a positive integer')
   exit()
