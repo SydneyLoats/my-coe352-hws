@@ -90,7 +90,7 @@ def solve_displacement(mat):
   eigen_sv = solve_eigenvalues(sv)
   print(f'\nEigenvalues for A: \n{eigen_sv}')
 
-  condition_value_a = find_largest_eigen(eigen_sv)/find_smallest_eigen(eigen_sv)
+  condition_value_a = find_largest_sing(sv)/find_smallest_sing(sv)
   print(f'\nCondition value for A: \n{condition_value_a}')
 
 #creating A transpose matrix
@@ -103,7 +103,7 @@ def solve_displacement(mat):
   eigen_sva = solve_eigenvalues(sva)
   print(f'\nEigenvalues for A transpose: \n{eigen_sva}')
 
-  condition_value_a = find_largest_eigen(eigen_sva)/find_smallest_eigen(eigen_sva)
+  condition_value_a = find_largest_sing(sva)/find_smallest_sing(sva)
   print(f'\nCondition value for A transpose: \n{condition_value_a}')
 
 #creating identity matrix
@@ -116,7 +116,7 @@ def solve_displacement(mat):
   eigen_svc = solve_eigenvalues(svc)
   print(f'\nEigenvalues for C: \n{eigen_svc}')
   
-  condition_value_c = find_largest_eigen(eigen_svc)/find_smallest_eigen(eigen_svc)
+  condition_value_c = find_largest_sing(svc)/find_smallest_sing(svc)
   print(f'\nCondition value for C: \n{condition_value_c}')
 
 #creating stiffness matrix, K
@@ -129,7 +129,7 @@ def solve_displacement(mat):
   eigen_svk = solve_eigenvalues(svk)
   print(f'\nEigenvalues for K: \n{eigen_svk}')
 
-  condition_value_k = find_largest_eigen(eigen_svk)/find_smallest_eigen(eigen_svk)
+  condition_value_k = find_largest_sing(svk)/find_smallest_sing(svk)
   print(f'\nCondition value for K: \n{condition_value_k}')  
 
 #creating K inverse matrix
@@ -147,7 +147,7 @@ def solve_displacement(mat):
   print(f'\nInternal stress vector, w, is \n{w_vec}')
 
 #print out the displacement
-  print(f'\nu vector is \n{u_vec}')
+  print(f'\nDisplacement vector, u, is \n{u_vec}')
   for i in range(len(u_vec)):
     print(f'Displacement {i+1} = {u_vec[i]}')
   return u_vec
@@ -165,20 +165,20 @@ def solve_eigenvalues(s):
     eigen[r] = s[r]*s[r]
   return eigen
 
-#function to find the largest eigenvalue
-def find_largest_eigen(eigen):
-  largest = eigen[0]
-  for r in range(len(eigen)):
-    if eigen[r] > largest:
-      largest = eigen[r]
+#function to find the largest singular value
+def find_largest_sing(sing):
+  largest = sing[0]
+  for r in range(len(sing)):
+    if sing[r] > largest:
+      largest = sing[r]
   return largest
 
-#function to find the smallest eigenvalue
-def find_smallest_eigen(eigen):
-  smallest = eigen[0]
-  for r in range(len(eigen)):
-    if eigen[r] < smallest:
-      smallest = eigen[r]
+#function to find the smallest singular value
+def find_smallest_sing(sing):
+  smallest = sing[0]
+  for r in range(len(sing)):
+    if sing[r] < smallest:
+      smallest = sing[r]
   return smallest
 
 #solve the system
